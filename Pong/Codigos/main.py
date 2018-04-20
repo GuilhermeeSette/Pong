@@ -35,28 +35,27 @@ pygame.draw.line(screen,white,((display_width /2) ,0),((display_width /2),displa
 pygame.draw.circle(screen, white,((display_width //2), (display_height //2)), 100, 3)
 
 
-player_width = 10
-player_height = 100
-def player1(pl_x,pl_y):
-    
-    pygame.draw.rect(screen, white,(pl_x,pl_y, player_width,player_height))
-
 #Bolinha
+player_height = 100
+player_width = 20
+
+
+
+def player1(pl_x,pl_y):
+    pygame.draw.rect(screen, white,(pl_x, pl_y, player_width, player_height))
+
 def bola(x,y):
     pygame.draw.circle(screen, white,(x, y), 5, 3)
 
 def game_loop():
     bol_x = (display_width //2)
     bol_y = (display_height //2)
-    #Bola
+    pl_x = (display_width - player_width)
+    pl_y = (display_height// 2)
     x_change = -1
     y_change = -1
-    #Player 1
-    #px_change = 3
     py_change = 0
-    pl_x = (display_width - player_width)
-    pl_y = display_height//2
-    sorte = random.randint(0,1)
+    sorte = 1#random.randint(0,1)
     #Decide na sorte para qual lado a bolinha vai sair do meio de campo
     if sorte == 1:
             
@@ -69,28 +68,29 @@ def game_loop():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        py_change = -3
-                    elif event.key == pygame.K_DOWN:
-                        py_change = 3
+                if event.key == pygame.K_UP:
+                    py_change = -2
+                elif event.key == pygame.K_DOWN:
+                    py_change = 2
+
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     py_change = 0
+
+
         plano_padrao()
         bol_x += x_change
         bol_y += y_change
-        bola(bol_x, bol_y)
-        
         pl_y += py_change
         player1(pl_x,pl_y)
-        
+        bola(bol_x, bol_y)
         
 
         if bol_y < 0 or bol_y > display_height:
             y_change = y_change * -1
-        elif bol_y > pl_y + player_height:
-            if bol_x >= pl_x and bol_x <= pl_x + player_width or bol_x >= pl_x and bol_x  <= pl_x + player_width or bol_x >= pl_x and bol_x <= pl_x+player_width:
-                x_change = x_change * -1
+        elif bol_x == display_width -  player_width:
+            if bol_y  >= pl_y  and bol_y <= pl_y + player_height:
+             x_change = x_change * -1
         elif bol_x < 0 or bol_x > display_width:
             gol = True
             game_loop()
